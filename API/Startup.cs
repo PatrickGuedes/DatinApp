@@ -40,10 +40,10 @@ namespace API
             services.AddCors();
 
             services.AddControllers();
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-            // });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
+            });
 
             services.AddIdentityServices(_config);
 
@@ -53,15 +53,15 @@ namespace API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseMiddleware<ExceptionMiddleware>();
-            
+
             // app.UseMiddleware(typeof(ExceptionMiddleware));
 
-            // if (env.IsDevelopment())
-            // {
+            if (env.IsDevelopment())
+            {
                 // app.UseDeveloperExceptionPage();
-            // app.UseSwagger();
-            // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
-            // }
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
+            }
 
             app.UseHttpsRedirection();
 
