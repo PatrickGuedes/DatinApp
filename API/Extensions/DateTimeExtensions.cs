@@ -12,7 +12,7 @@ namespace API.Extensions
             var today = DateTime.Today;
             var age = today.Year - dob.Year;
 
-            return dob.Date > today.AddYears(-age) ? age-- : age;
+            return dob.Date > today.AddYears(-age) ? --age : age;
         }
     }
 }
