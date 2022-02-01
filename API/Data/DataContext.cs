@@ -15,6 +15,7 @@ namespace API.Data
         }
         public DbSet<AppUser> Users { get; set; }
         public DbSet<UserLike> Likes { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -24,17 +25,28 @@ namespace API.Data
                 .HasKey(key => new {key.SourceUserId, key.LikedUserId});
 
             builder.Entity<UserLike>()
-                .HasOne(userLike => userLike.SourceUser)
+                .HasOne(like => like.SourceUser)
                 .WithMany(user => user.LikedUsers)
-                .HasForeignKey(userLiked => userLiked.SourceUserId)
+                .HasForeignKey(liked => liked.SourceUserId)
                 .OnDelete(DeleteBehavior.Cascade);  // That might cause an error on SQL Server (use: NoAction)
 
-
             builder.Entity<UserLike>()
-                .HasOne(userLiked => userLiked.LikedUser)
+                .HasOne(like => like.LikedUser)
                 .WithMany(user => user.LikedByUsers)
-                .HasForeignKey(userLiked => userLiked.LikedUserId)
+                .HasForeignKey(like => like.LikedUserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.Entity<Message>()
+                .HasOne(message => message.UserRecipient)
+                .WithMany(user => user.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(message => message.UserSender)
+                .WithMany(user => user.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }
