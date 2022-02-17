@@ -36,7 +36,7 @@ namespace API.Helpers
                            src => src.UserRecipient.Photos
                                                         .FirstOrDefault(photo => photo.IsMain).Url));
 
-
+        CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
 
         }
 

@@ -22,6 +22,9 @@ namespace API.Data.Repository
             _context = context;
             _mapper = mapper;
         }
+
+
+
         public void AddMessage(Message message)
         {
             _context.Messages.Add(message);
@@ -31,6 +34,8 @@ namespace API.Data.Repository
         {
             _context.Messages.Remove(message);
         }
+
+
 
         public async Task<Message> GetMessage(int id)
         {
@@ -46,13 +51,13 @@ namespace API.Data.Repository
 
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(message => message.UserRecipient.UserName == messageParams.Username 
+                "Inbox" => query.Where(message => message.UserRecipient.UserName == messageParams.Username
                                                && message.RecipientDeleted == false),
 
                 "Outbox" => query.Where(message => message.UserSender.UserName == messageParams.Username
                                                 && message.SenderDeleted == false),
 
-                _ => query.Where(message => message.UserRecipient.UserName == messageParams.Username 
+                _ => query.Where(message => message.UserRecipient.UserName == messageParams.Username
                                          && message.DateRead == null
                                          && message.RecipientDeleted == false)
 
@@ -67,7 +72,7 @@ namespace API.Data.Repository
             var messages = await _context.Messages
                                             .Include(message => message.UserSender).ThenInclude(photos => photos.Photos)
                                             .Include(message => message.UserRecipient).ThenInclude(photos => photos.Photos)
-                                            .Where(message => message.UserRecipientUsername == currentUsername 
+                                            .Where(message => message.UserRecipientUsername == currentUsername
                                                             && message.UserSenderUsername == recipientUsername
                                                             && message.RecipientDeleted == false
                                                             ||
@@ -86,7 +91,7 @@ namespace API.Data.Repository
             {
                 foreach (var message in unreadMessages)
                 {
-                    message.DateRead = DateTime.Now;
+                    message.DateRead = DateTime.UtcNow;
 
                 }
                 await _context.SaveChangesAsync();
@@ -95,6 +100,40 @@ namespace API.Data.Repository
             return _mapper.Map<IEnumerable<MessageDto>>(messages);
 
         }
+
+
+
+        public void AddGroup(Group group)
+        {
+            _context.Groups.Add(group);
+        }
+
+        public async Task<Connection> GetConnection(string connectionId)
+        {
+            return await _context.Connections.FindAsync(connectionId);
+        }
+
+        public async Task<Group> GetMessageGroup(string groupName)
+        {
+            return await _context.Groups
+                                       .Include(con => con.Connections)
+                                       .FirstOrDefaultAsync(group => group.Name == groupName);
+        }
+
+        public void RemoveConnection(Connection connection)
+        {
+            _context.Connections.Remove(connection);
+        }
+
+        public async Task<Group> GetGroupForConnection(string connectionId)
+        {
+            return await _context.Groups
+                                        .Include(cnn => cnn.Connections)
+                                        .Where(group => group.Connections.Any(cnn => cnn.ConnectionId == connectionId ))
+                                        .FirstOrDefaultAsync();
+        }
+
+
 
         public async Task<bool> SalveAllAsync()
         {

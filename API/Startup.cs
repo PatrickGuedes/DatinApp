@@ -8,6 +8,7 @@ using API.Extensions;
 using API.Interfaces;
 using API.Middleware;
 using API.Services;
+using API.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,8 +36,8 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddSignalR();
             services.AddApplicationServices(_config);
-
             services.AddCors();
 
             services.AddControllers();
@@ -68,6 +69,7 @@ namespace API
             app.UseRouting();
 
             app.UseCors(policy => policy.AllowAnyHeader().
+                                         AllowCredentials().
                                          AllowAnyMethod().
                                          WithOrigins("https://localhost:4200"));
 
@@ -78,6 +80,9 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PresenceHub>("hubs/presence");
+                endpoints.MapHub<MessageHub>("hubs/message");
+
             });
         }
     }
