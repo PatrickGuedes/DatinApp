@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.DTOs;
 using API.Entities;
 using API.Helpers;
@@ -14,7 +10,6 @@ namespace API.Data.Repository
 {
     public class MessageRepository : IMessageRepository
     {
-
         readonly DataContext _context;
         readonly IMapper _mapper;
         public MessageRepository(DataContext context, IMapper mapper)
@@ -22,8 +17,6 @@ namespace API.Data.Repository
             _context = context;
             _mapper = mapper;
         }
-
-
 
         public void AddMessage(Message message)
         {
@@ -35,8 +28,6 @@ namespace API.Data.Repository
             _context.Messages.Remove(message);
         }
 
-
-
         public async Task<Message> GetMessage(int id)
         {
             return await _context.Messages
@@ -44,34 +35,33 @@ namespace API.Data.Repository
                                           .Include(user => user.UserRecipient)
                                           .SingleOrDefaultAsync(message => message.Id == id);
         }
-
         public async Task<PagedList<MessageDto>> GetMessagesForUser(MessageParams messageParams)
         {
-            var query = _context.Messages.OrderByDescending(messages => messages.MessageSent).AsQueryable();
+            var query = _context.Messages
+                                         .OrderByDescending(messages => messages.MessageSent)
+                                         .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
+                                         .AsQueryable();
 
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(message => message.UserRecipient.UserName == messageParams.Username
+                "Inbox" => query.Where(message => message.UserRecipientUsername == messageParams.Username
                                                && message.RecipientDeleted == false),
 
-                "Outbox" => query.Where(message => message.UserSender.UserName == messageParams.Username
+                "Outbox" => query.Where(message => message.UserSenderUsername == messageParams.Username
                                                 && message.SenderDeleted == false),
 
-                _ => query.Where(message => message.UserRecipient.UserName == messageParams.Username
+                _ => query.Where(message => message.UserRecipientUsername == messageParams.Username
                                          && message.DateRead == null
                                          && message.RecipientDeleted == false)
 
             };
 
-            var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
-            return await PagedList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
+            return await PagedList<MessageDto>.CreateAsync(query, messageParams.PageNumber, messageParams.PageSize);
         }
 
         public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, string recipientUsername)
         {
             var messages = await _context.Messages
-                                            .Include(message => message.UserSender).ThenInclude(photos => photos.Photos)
-                                            .Include(message => message.UserRecipient).ThenInclude(photos => photos.Photos)
                                             .Where(message => message.UserRecipientUsername == currentUsername
                                                             && message.UserSenderUsername == recipientUsername
                                                             && message.RecipientDeleted == false
@@ -81,6 +71,7 @@ namespace API.Data.Repository
                                                             && message.SenderDeleted == false)
 
                                             .OrderBy(m => m.MessageSent)
+                                            .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
                                             .ToListAsync();
 
             var unreadMessages = messages
@@ -94,13 +85,10 @@ namespace API.Data.Repository
                     message.DateRead = DateTime.UtcNow;
 
                 }
-                await _context.SaveChangesAsync();
             }
 
-            return _mapper.Map<IEnumerable<MessageDto>>(messages);
-
+            return messages;
         }
-
 
 
         public void AddGroup(Group group)
@@ -129,15 +117,9 @@ namespace API.Data.Repository
         {
             return await _context.Groups
                                         .Include(cnn => cnn.Connections)
-                                        .Where(group => group.Connections.Any(cnn => cnn.ConnectionId == connectionId ))
+                                        .Where(group => group.Connections.Any(cnn => cnn.ConnectionId == connectionId))
                                         .FirstOrDefaultAsync();
         }
 
-
-
-        public async Task<bool> SalveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
     }
 }

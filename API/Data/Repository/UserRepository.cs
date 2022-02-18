@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using API.DTOs;
 using API.Entities;
 using API.Helpers;
@@ -14,16 +11,13 @@ namespace API.Data.Repository
 {
     public class UserRepository : IUserRepository
     {
-
+        readonly IMapper _mapper;
+        readonly DataContext _context;
         public UserRepository(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
-
-
-        readonly IMapper _mapper;
-        readonly DataContext _context;
 
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
@@ -42,11 +36,6 @@ namespace API.Data.Repository
             return await _context.Users
                                         .Include(user => user.Photos)
                                         .ToListAsync();
-        }
-
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
         }
 
         public void Update(AppUser user)
@@ -85,6 +74,14 @@ namespace API.Data.Repository
                                         .Where(user => user.UserName == username)
                                         .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                                         .SingleOrDefaultAsync();
+        }
+
+        public async Task<string> GetUserGender(string username)
+        {
+            return await _context.Users
+                                        .Where(user => user.UserName == username)
+                                        .Select(user => user.Gender)
+                                        .FirstOrDefaultAsync();
         }
     }
 }
