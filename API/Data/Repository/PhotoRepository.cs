@@ -32,9 +32,9 @@ namespace API.Data.Repository
                                         .Where(p => p.IsApproved == false)
                                         .Select(u => new PhotoForApprovalDto
                                                                              {
-                                                                                PhotoId = u.Id,
+                                                                                Id = u.Id,
                                                                                 Username = u.AppUser.UserName,
-                                                                                PhotoUrl = u.Url,
+                                                                                Url = u.Url,
                                                                                 IsApproved = u.IsApproved
                                                                              })
                                                                                 .ToListAsync();
