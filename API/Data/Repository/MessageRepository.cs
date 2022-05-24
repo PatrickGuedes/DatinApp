@@ -1,5 +1,6 @@
 using API.DTOs;
 using API.Entities;
+using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
@@ -59,37 +60,22 @@ namespace API.Data.Repository
             return await PagedList<MessageDto>.CreateAsync(query, messageParams.PageNumber, messageParams.PageSize);
         }
 
-        public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername, string recipientUsername)
+        public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUsername,
+                    string recipientUsername)
         {
             var messages = await _context.Messages
-                                            .Where(message => message.UserRecipientUsername == currentUsername
-                                                            && message.UserSenderUsername == recipientUsername
-                                                            && message.RecipientDeleted == false
-                                                            ||
-                                                               message.UserRecipientUsername == recipientUsername
-                                                            && message.UserSenderUsername == currentUsername
-                                                            && message.SenderDeleted == false)
-
-                                            .OrderBy(m => m.MessageSent)
-                                            .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
-                                            .ToListAsync();
-
-            var unreadMessages = messages
-                                        .Where(messages => messages.DateRead == null
-                                                        && messages.UserRecipientUsername == currentUsername)
-                                        .ToList();
-            if (unreadMessages.Any())
-            {
-                foreach (var message in unreadMessages)
-                {
-                    message.DateRead = DateTime.UtcNow;
-
-                }
-            }
+                .Where(m => m.UserRecipient.UserName == currentUsername && m.RecipientDeleted == false
+                        && m.UserSender.UserName == recipientUsername
+                        || m.UserRecipient.UserName == recipientUsername
+                        && m.UserSender.UserName == currentUsername && m.SenderDeleted == false
+                )
+                .MarkUnreadAsRead(currentUsername)
+                .OrderBy(m => m.MessageSent)
+                .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
 
             return messages;
         }
-
 
         public void AddGroup(Group group)
         {
