@@ -24,6 +24,7 @@ namespace API.Extensions
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<LogUserActivity>();
 
+
             services.AddAutoMapper(typeof(AutoMapperProfiles));
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddDbContext<DataContext>(options =>
