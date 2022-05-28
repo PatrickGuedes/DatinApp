@@ -6,6 +6,7 @@
 
 .card-body {
     padding: 0 25px;
+    word-wrap: normal;
 }
 
 .card-footer{
@@ -14,4 +15,5 @@
     border-top: none;
 }
 
-.ngx-gallery { display: inline-block; margin-bottom: 20px; }
+.ngx-gallery { display: inline-block; margin-bottom: 20px;  }
+

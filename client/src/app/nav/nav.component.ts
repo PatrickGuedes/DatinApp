@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
-import { User } from '../_models/user';
+import { ToastrService } from 'ngx-toastr';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -11,18 +10,20 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
+  @ViewChild('loginForm') loginForm: NgForm;
   model: any = {};
+  isCollapsed = true;
   
   constructor(
-    public accountService: AccountService, 
-    private router: Router,
-    private toastr: ToastrService) { }
+    public accountService: AccountService,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
 
   login() {
     this.accountService.login(this.model).subscribe(resp => {
+      this.loginForm.resetForm();
       this.router.navigateByUrl('/members');
     });
   }
