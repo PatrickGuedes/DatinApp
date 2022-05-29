@@ -1,6 +1,6 @@
 <div class="card">
 
-    <div class="card-body" #scrollMe style="overflow: scroll; height:535px" [scrollTop]="scrollMe.scrollHeight">
+    <div class="card-body" data-spy="scroll" #scrollMe style="overflow: scroll; height:535px" [scrollTop]="scrollMe.scrollHeight">
 
         <div *ngIf="(messageService.messageThread$ | async)?.length === 0">
             No messages yet
@@ -50,6 +50,4 @@
             </div>
         </form>
     </div>
-
-
 </div>

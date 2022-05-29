@@ -25,12 +25,18 @@ export class NavComponent implements OnInit {
     this.accountService.login(this.model).subscribe(resp => {
       this.loginForm.resetForm();
       this.router.navigateByUrl('/members');
+      this.collapse();
     });
   }
 
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/');
+    this.collapse();
+  }
+
+  collapse() {
+    this.isCollapsed = !this.isCollapsed;
   }
 
 }

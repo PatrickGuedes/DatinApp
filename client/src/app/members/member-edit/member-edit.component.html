@@ -43,13 +43,12 @@
     </div>
 
     <div class="col-8">
-        <tabset class="member-tabset">
+        <tabset >
             <tab heading="about {{member.knownAs}}">
 
                 <form #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()" >
-
-                    <h4>Description</h4>
-                    <textarea class="form-control" [(ngModel)]="member.introduction" name="introduction" rows="6"></textarea>
+                        <h4>Description</h4>
+                        <textarea class="form-control" [(ngModel)]="member.introduction" name="introduction" rows="6"></textarea>
 
                     <h4 class="mt-2">Looking for</h4>
                     <textarea class="form-control" [(ngModel)]="member.lookingFor" name="lookingFor" rows="6"></textarea>
