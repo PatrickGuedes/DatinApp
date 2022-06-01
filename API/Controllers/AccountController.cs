@@ -54,7 +54,7 @@ namespace API.Controllers
         {
             var user = await _userManager.Users
                     .Include(user => user.Photos)
-                    .FirstOrDefaultAsync(user => user.UserName == loginDto.Username.ToLower());
+                    .FirstOrDefaultAsync(user => user.UserName == loginDto.Username.ToLower().Trim());
 
             if (user == null) return Unauthorized("Invalid username");
 
