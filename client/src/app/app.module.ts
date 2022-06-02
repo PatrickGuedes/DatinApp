@@ -36,6 +36,7 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 import { UtcToLocalTimePipe } from './_pipes/utc-to-local-time.pipe';
+import { TimeAgoSecondsPipe } from './_pipes/time-ago-seconds.pipe';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { UtcToLocalTimePipe } from './_pipes/utc-to-local-time.pipe';
     PhotoManagementComponent,
     RolesModalComponent,
     ConfirmDialogComponent,
-    UtcToLocalTimePipe
+    UtcToLocalTimePipe,
+    TimeAgoSecondsPipe
 
   ],
   imports: [
