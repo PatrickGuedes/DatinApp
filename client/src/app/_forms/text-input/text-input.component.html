@@ -16,4 +16,11 @@
         
         <div *ngIf="ngControl.control.errors?.isMatching" class="invalid-feedback">Password do not match {{label}}</div>
         
+        <div *ngIf="ngControl.control.errors?.isUppercase" class="invalid-feedback">{{label}} must have at least one uppercase ('A'-'Z') </div>
+        <div *ngIf="ngControl.control.errors?.hasDigit" class="invalid-feedback">{{label}} must have at least one digit ('0'-'9') </div>
+        <div *ngIf="ngControl.control.errors?.isAlphanumeric" class="invalid-feedback">{{label}} invalid, can only contain letters or digits.</div>
+
+
+
+
         

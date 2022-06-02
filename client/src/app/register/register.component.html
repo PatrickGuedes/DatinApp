@@ -1,5 +1,5 @@
 <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off" class=" d-flex flex-column">
-    <h2 class="text-center text-primary">Sign Up</h2>
+    <h2 class="text-center">Sign Up</h2>
     <hr>
 
     <label class="control-label mb-2" style="margin-right:10px">I am a: </label>
@@ -28,15 +28,6 @@
     </app-text-input>
     <app-text-input [formControl]="registerForm.controls['confirmPassword']" [label]="'Confirm Password'"
         [type]="'password'"></app-text-input>
-
-
-    <div class="row">
-        <ul class="text-danger" *ngIf="validationErrors">
-            <li *ngFor="let error of validationErrors">
-                {{error.description}}
-            </li>
-        </ul>
-    </div>
 
     <div class="form-group text-center">
         <button [disabled]="!registerForm.valid" class="btn btn-success me-2" type="submit">Register</button>
