@@ -61,7 +61,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
         imagePercent: 80,
         thumbnailsColumns: 4,
         imageAnimation: NgxGalleryAnimation.Slide,
-        preview: false
+        preview: true
       }
     ]
 

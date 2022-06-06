@@ -7,7 +7,7 @@
         <ul
         #scrollMe
         [scrollTop]="scrollMe.scrollHeight"
-        style="overflow: auto; height:535px;"
+        style="overflow: auto; height:450px;"
         class="chat"
         *ngIf="(messageService.messageThread$ | async)?.length > 0">
             
@@ -38,7 +38,8 @@
 
         </ul>
         </div>
-    <div class="card-footer">
+    <div class="card-footer"
+    >
         <form #messageForm="ngForm" (ngSubmit)="sendMessage()" autocomplete="off">
             <div class="input-group">
                 <input name="messageContent" required [(ngModel)]="messageContent" type="text"

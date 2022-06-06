@@ -28,12 +28,14 @@
                     <p>{{member.created | date}}</p>
                 </div>
 
-            </div>
+            </div> 
 
             <div class="card-footer">
-                <div class="btn-group d-flex flex-wrap">
-                    <button class="btn btn-primary" (click)="addLike(member)">Like</button>
-                    <button class="btn btn-success" (click)="selectTab(3)">Message</button>
+                <div class="mb-1">
+                    <button class="btn btn-primary" style="width: 100%;"  (click)="addLike(member)">Like</button>
+                </div>
+                <div class="mb-1">
+                    <button class="btn btn-success" style="width: 100%;" (click)="selectTab(3)">Message</button>
                 </div>
             </div>
         </div>
