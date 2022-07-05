@@ -1,6 +1,6 @@
 # DatinApp
 
-This is a training project built to reunite some of the nicest features of a <strong>.NET Core Web API</strong> and <strong>Angular</strong> app. 
+This is a training project built to reunite some of the nicest features of a <strong>.NET Core Web API</strong> and <strong>Angular</strong>. 
 
 - Persisting data with <strong>Entity Framework Core</strong>. - Fluent API (In order to manually set the many-to-many relationship).
 
