@@ -37,6 +37,7 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 import { UtcToLocalTimePipe } from './_pipes/utc-to-local-time.pipe';
 import { TimeAgoSecondsPipe } from './_pipes/time-ago-seconds.pipe';
+import { LearnMoreComponent } from './modals/learn-more/learn-more.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { TimeAgoSecondsPipe } from './_pipes/time-ago-seconds.pipe';
     RolesModalComponent,
     ConfirmDialogComponent,
     UtcToLocalTimePipe,
-    TimeAgoSecondsPipe
+    TimeAgoSecondsPipe,
+    LearnMoreComponent
 
   ],
   imports: [

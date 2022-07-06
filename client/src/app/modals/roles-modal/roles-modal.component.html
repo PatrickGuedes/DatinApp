@@ -1,7 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title pull-left">Edit roles for {{user.username}}</h4>
-    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
-      <span aria-hidden="true">&times;</span>
+    <button type="button" class="btn-close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
     </button>
   </div>
   <div class="modal-body">
@@ -19,6 +18,6 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Cancel</button>
+    <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Cancel</button>
     <button type="button" class="btn btn-success" (click)="updateRoles()">Submit</button>
   </div>

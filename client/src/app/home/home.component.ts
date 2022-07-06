@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../_services/account.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { LearnMoreComponent } from '../modals/learn-more/learn-more.component';
 
 @Component({
   selector: 'app-home',
@@ -9,8 +9,9 @@ import { AccountService } from '../_services/account.service';
 })
 export class HomeComponent implements OnInit {
   registerMode = false;
+  bsModalRef: BsModalRef;
 
-  constructor() { }
+  constructor(private modalService: BsModalService) { }
 
   ngOnInit(): void {
   }
@@ -21,6 +22,15 @@ export class HomeComponent implements OnInit {
 
   cancelRegisterMode(event: boolean){
     this.registerMode = event;
+  }
+
+  openLearnMoreModal() {
+    const config = {
+      class: 'modal-dialog-centered',
+      initialState: {
+      }
+    }
+    this.bsModalRef = this.modalService.show(LearnMoreComponent, config);
   }
 
 }
