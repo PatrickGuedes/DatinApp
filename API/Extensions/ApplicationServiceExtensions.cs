@@ -33,8 +33,8 @@ namespace API.Extensions
 
                 string connStr;
 
-                // Depending on if in development or production, use either Heroku-provided
-                // connection string, or development connection string from env var.
+                // // Depending on if in development or production, use either fly.io-provided
+                // // connection string, or development connection string from env var.
                 if (env == "Development")
                 {
                     // Use connection string from file.
@@ -42,7 +42,7 @@ namespace API.Extensions
                 }
                 else
                 {
-                    // Use connection string provided at runtime by Heroku.
+                    // Use connection string provided at runtime by fly.io.
                     var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
                     // Parse connection URL to connection string for Npgsql
@@ -60,7 +60,7 @@ namespace API.Extensions
                 }
 
                 // Whether the connection string came from the local development configuration file
-                // or from the environment variable from Heroku, use it to set up your DbContext.
+                // or from the environment variable from fly.io, use it to set up your DbContext.
                 options.UseNpgsql(connStr);
 
             });
