@@ -1,4 +1,4 @@
-# fly.toml file generated for dtngapp on 2022-12-17T21:47:48-03:00
+# fly.toml file generated for dtngapp on 2022-12-20T15:31:38-03:00
 
 app = "dtngapp"
 kill_signal = "SIGINT"
