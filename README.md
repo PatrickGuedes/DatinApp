@@ -41,3 +41,6 @@ This is a training project built to reunite some of the nicest features of a <st
 - Docker - Dockerizing the app and deploy to fly.io
 
 - And more...
+
+
+dtngapp.fly.dev
