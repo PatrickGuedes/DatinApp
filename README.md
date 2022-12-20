@@ -38,4 +38,6 @@ This is a training project built to reunite some of the nicest features of a <st
 
 - Pipes - To transform data. Receives a input data and returns the transformed.
 
+- Docker - Dockerizing the app and deploy to fly.io
+
 - And more...
